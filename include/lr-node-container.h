@@ -29,10 +29,19 @@ class LrNodeContainer : public NodeContainer, public Object
   public:
     uint m_maxRange;
 
+    /**
+     * @brief Get the type ID.
+     * @return The TypeId of the object.
+     */
     static TypeId GetTypeId(void);
 
     LrNodeContainer();
 
+    /**
+     * @brief Sets the maximum range for the LrNodeContainer.
+     *
+     * @param maxRange The maximum range to set.
+     */
     void SetMaxRange(uint32_t maxRange);
 
     /**
@@ -63,6 +72,12 @@ class LrNodeContainer : public NodeContainer, public Object
      */
     void ReverseLink(Ptr<LrNode> node);
 
+    /**
+     * @brief Retrieves an LrNode pointer from the NodeContainer given the index.
+     *
+     * @param i Index of the node to retrieve.
+     * @return Ptr<LrNode> Pointer to the LrNode at the specified index.
+     */
     Ptr<LrNode> Get(int i);
 
     /**

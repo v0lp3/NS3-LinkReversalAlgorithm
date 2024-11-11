@@ -20,12 +20,17 @@ using namespace ns3;
 class LinkReversalRouting : public Ipv4RoutingProtocol
 {
   public:
-    static TypeId GetTypeId(void);
+    Ptr<Node> m_node;
+    Ptr<Ipv4> m_ipv4;
+
     LinkReversalRouting();
     ~LinkReversalRouting();
 
-    Ptr<Node> m_node;
-    Ptr<Ipv4> m_ipv4;
+    /**
+     * @brief Get the type ID.
+     * @return The TypeId of the object.
+     */
+    static TypeId GetTypeId(void);
 
     /**
      * @brief Handles packet generation at the node.

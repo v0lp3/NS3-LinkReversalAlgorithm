@@ -50,8 +50,6 @@ LinkReversalRouting::RouteOutput(Ptr<Packet> packet,
         instance.m_benchmark_times.first = Simulator::Now();
     }
 
-    instance.m_total_packet++;
-
     // If a node have no one to forward it will try to reverse the links, but this is only tried one
     // time
     if (instance.nodes.GetOutBoundNeighbours(actualLrNode)->GetN() == 0)
@@ -74,12 +72,15 @@ LinkReversalRouting::RouteOutput(Ptr<Packet> packet,
     route->SetGateway(instance.interfaces.GetAddress(nextHop->GetId()));
 
     // nodes haves only one interface in addition to the loopback interface, so the value is
-    // hardocded..
+    // hardcoded..
     route->SetOutputDevice((idev != nullptr) ? idev : m_node->GetDevice(1));
 
     route->SetSource(actualNodeIpv4);
 
     sockerr = Socket::ERROR_NOTERROR;
+
+    instance.m_total_packet++;
+
     return route;
 }
 

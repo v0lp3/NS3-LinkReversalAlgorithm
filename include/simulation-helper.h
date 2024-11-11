@@ -52,7 +52,7 @@ class SimulationHelper
      * ensuring that only one instance of the helper exists throughout the simulation's
      * lifetime.
      *
-     * @return A reference to the single SimulationHelper instance.
+     * \return A reference to the single SimulationHelper instance.
      */
     static SimulationHelper& GetInstance();
 

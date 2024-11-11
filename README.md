@@ -91,6 +91,17 @@ General Arguments:
     --PrintHelp:                 Print this help message.
 ```
 
+### Visualizing the simulation
+
+To visualize the simulation, you can append the --visualize option when running the simulation:
+
+```./ns3 run 'lra-simulator' --visualize```
+
+> [!IMPORTANT]  
+> Ensure that ns3 is configured with the PyViz visualizer
+
+
+
 ## References
 
 - [Analysis of link reversal routing algorithms](https://www.ece.iastate.edu/snt/files/2015/10/sicomp05.pdf)

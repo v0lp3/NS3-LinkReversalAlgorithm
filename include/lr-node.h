@@ -29,6 +29,10 @@ class LrNode : public Node
     LrNode();
     LrNode(double height);
 
+    /**
+     * @brief Get the type ID.
+     * @return The TypeId of the object.
+     */
     static TypeId GetTypeId(void);
 
     double GetHeight() const;
