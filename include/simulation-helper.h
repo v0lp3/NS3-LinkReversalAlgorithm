@@ -14,6 +14,15 @@
 
 using namespace ns3;
 
+/**
+ * \class SimulationHelper
+ * @brief Provides various utilities for managing the simulation environment.
+ *
+ * This class is primarily responsible for setting up the simulation environment,
+ * parsing command-line input, and installing the Link Reversal Routing protocol.
+ * It is also used to benchmark the simulation by counting the number of packets
+ * sent, received, and failed.
+ */
 class SimulationHelper
 {
   public:
@@ -36,6 +45,15 @@ class SimulationHelper
     void setMaxPackets(uint32_t maxPackets);
     void setSpeed(float speed);
 
+    /**
+     * @brief Provides a singleton instance of the SimulationHelper class.
+     *
+     * This method returns a reference to a static instance of the SimulationHelper class,
+     * ensuring that only one instance of the helper exists throughout the simulation's
+     * lifetime.
+     *
+     * @return A reference to the single SimulationHelper instance.
+     */
     static SimulationHelper& GetInstance();
 
   private:

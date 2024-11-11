@@ -43,7 +43,12 @@ LrNode::GetIpv4Address()
 double
 LrNode::GetDistanceFrom(Ptr<LrNode> node) const
 {
-    Vector from = this->GetObject<MobilityModel>()->GetPosition();
-    Vector to = node->GetObject<MobilityModel>()->GetPosition();
-    return sqrt(pow(from.x - to.x, 2) + pow(from.y - to.y, 2));
+    if (this->GetObject<MobilityModel>() && node->GetObject<MobilityModel>())
+    {
+        Vector from = this->GetObject<MobilityModel>()->GetPosition();
+        Vector to = node->GetObject<MobilityModel>()->GetPosition();
+        return sqrt(pow(from.x - to.x, 2) + pow(from.y - to.y, 2));
+    }
+
+    return -1;
 }
