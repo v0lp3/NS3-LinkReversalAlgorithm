@@ -51,7 +51,7 @@ LrNodeContainer::Create(uint32_t n, uint32_t sinkID)
 }
 
 Ptr<LrNodeContainer>
-LrNodeContainer::GetNodeNeighbours(Ptr<LrNode> node)
+LrNodeContainer::GetNodeNeighbours(Ptr<LrNode> node, std::function<bool(Ptr<LrNode>)> filter)
 {
     Ptr<LrNodeContainer> neighbours = CreateObject<LrNodeContainer>();
 
@@ -61,7 +61,10 @@ LrNodeContainer::GetNodeNeighbours(Ptr<LrNode> node)
 
         if (n->GetId() != node->GetId() && n->GetDistanceFrom(node) <= m_maxRange)
         {
-            neighbours->Add(n);
+            if (filter(n))
+            {
+                neighbours->Add(n);
+            }
         }
     }
 
@@ -71,39 +74,15 @@ LrNodeContainer::GetNodeNeighbours(Ptr<LrNode> node)
 Ptr<LrNodeContainer>
 LrNodeContainer::GetInboundNeighbours(Ptr<LrNode> node)
 {
-    Ptr<LrNodeContainer> neighbours = this->GetNodeNeighbours(node);
-    Ptr<LrNodeContainer> inbound = CreateObject<LrNodeContainer>();
-
-    for (uint32_t i = 0; i < neighbours->GetN(); i++)
-    {
-        Ptr<LrNode> n = neighbours->Get(i);
-
-        if (n->GetHeight() > node->GetHeight())
-        {
-            inbound->Add(n);
-        }
-    }
-
-    return inbound;
+    return GetNodeNeighbours(node,
+                             [node](Ptr<LrNode> n) { return n->GetHeight() > node->GetHeight(); });
 }
 
 Ptr<LrNodeContainer>
 LrNodeContainer::GetOutBoundNeighbours(Ptr<LrNode> node)
 {
-    Ptr<LrNodeContainer> neighbours = this->GetNodeNeighbours(node);
-    Ptr<LrNodeContainer> outbound = CreateObject<LrNodeContainer>();
-
-    for (uint32_t i = 0; i < neighbours->GetN(); i++)
-    {
-        Ptr<LrNode> n = neighbours->Get(i);
-
-        if (n->GetHeight() <= node->GetHeight())
-        {
-            outbound->Add(n);
-        }
-    }
-
-    return outbound;
+    return GetNodeNeighbours(node,
+                             [node](Ptr<LrNode> n) { return n->GetHeight() <= node->GetHeight(); });
 }
 
 void
@@ -115,32 +94,30 @@ LrNodeContainer::ReverseLink(Ptr<LrNode> node)
         return;
 
     Ptr<LrNode> maxHeightNode = inboundNeighbours->Get(0);
-
     for (uint32_t i = 1; i < inboundNeighbours->GetN(); i++)
     {
-        Ptr<LrNode> n = inboundNeighbours->Get(i);
-
-        if (n->GetHeight() > maxHeightNode->GetHeight())
+        Ptr<LrNode> currentNode = inboundNeighbours->Get(i);
+        if (currentNode->GetHeight() > maxHeightNode->GetHeight())
         {
-            maxHeightNode = n;
+            maxHeightNode = currentNode;
         }
     }
 
     Ptr<LrNodeContainer> inboundNeighboursMaxHeight = this->GetInboundNeighbours(maxHeightNode);
 
     if (inboundNeighboursMaxHeight->GetN() == 0)
+    {
         node->SetHeight(maxHeightNode->GetHeight() + 0.1);
+    }
     else
     {
         Ptr<LrNode> minHeightNode = inboundNeighboursMaxHeight->Get(0);
-
         for (uint32_t i = 1; i < inboundNeighboursMaxHeight->GetN(); i++)
         {
-            Ptr<LrNode> n = inboundNeighboursMaxHeight->Get(i);
-
-            if (n->GetHeight() < minHeightNode->GetHeight())
+            Ptr<LrNode> currentNode = inboundNeighboursMaxHeight->Get(i);
+            if (currentNode->GetHeight() < minHeightNode->GetHeight())
             {
-                minHeightNode = n;
+                minHeightNode = currentNode;
             }
         }
 
@@ -156,7 +133,7 @@ LrNodeContainer::GetNodeFromIPv4(Ipv4Address address)
     {
         Ptr<LrNode> node = this->Get(i);
 
-        if (node->GetIpv4Address() == address)
+        if (node->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal() == address)
             return node;
     }
 
@@ -180,23 +157,25 @@ LrNodeContainer::GetNextHop(Ptr<LrNode> actualNode, Ipv4Address source, Ipv4Addr
     }
 
     Ptr<LrNode> nextHop = outbounds->Get(0);
-
     for (uint32_t i = 1; i < outbounds->GetN(); i++)
     {
-        Ptr<LrNode> node = outbounds->Get(i);
-        Ipv4Address nextHopAddress = node->GetIpv4Address();
+        Ptr<LrNode> currentNode = outbounds->Get(i);
+        Ipv4Address currentAddress = currentNode->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
 
-        if (nextHopAddress == source)
+        if (currentAddress == source)
             continue;
 
-        if (nextHopAddress == destination)
-            return node;
+        if (currentAddress == destination)
+            return currentNode;
 
-        else if (destinationNode->GetDistanceFrom(node) < destinationNode->GetDistanceFrom(nextHop))
-            nextHop = node;
+        if (destinationNode->GetDistanceFrom(currentNode) <
+            destinationNode->GetDistanceFrom(nextHop))
+        {
+            nextHop = currentNode;
+        }
     }
 
-    if (nextHop->GetIpv4Address() == source)
+    if (nextHop->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal() == source)
         return nullptr;
     else
         return nextHop;

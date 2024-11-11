@@ -43,6 +43,8 @@ LinkReversalRouting::RouteOutput(Ptr<Packet> packet,
 
     SimulationHelper& instance = SimulationHelper::GetInstance();
 
+    // When the benchmark is enabled, only a single packet is delivered.
+    // So we can use a simple vector for store the times.
     if (instance.m_enableBenchmark == true)
     {
         instance.m_benchmark_times.first = Simulator::Now();
@@ -50,11 +52,15 @@ LinkReversalRouting::RouteOutput(Ptr<Packet> packet,
 
     instance.m_total_packet++;
 
+    // If a node have no one to forward it will try to reverse the links, but this is only tried one
+    // time
     if (instance.nodes.GetOutBoundNeighbours(actualLrNode)->GetN() == 0)
         instance.nodes.ReverseLink(actualLrNode);
 
     Ptr<LrNode> nextHop = instance.nodes.GetNextHop(actualLrNode, header.GetSource(), destination);
 
+    // This occurs when the node has no available nodes to forward the packet to, even after the
+    // link reversal process.
     if (nextHop == nullptr)
     {
         instance.m_failure++;
@@ -67,6 +73,8 @@ LinkReversalRouting::RouteOutput(Ptr<Packet> packet,
     route->SetDestination(destination);
     route->SetGateway(instance.interfaces.GetAddress(nextHop->GetId()));
 
+    // nodes haves only one interface in addition to the loopback interface, so the value is
+    // hardocded..
     route->SetOutputDevice((idev != nullptr) ? idev : m_node->GetDevice(1));
 
     route->SetSource(actualNodeIpv4);
@@ -119,6 +127,8 @@ LinkReversalRouting::RouteInput(Ptr<const Packet> packet,
 
     Ptr<Ipv4Route> route = Create<Ipv4Route>();
     Ptr<LrNode> nextHop = instance.nodes.GetNextHop(actualLrNode, header.GetSource(), destination);
+
+    // time to live
     uint8_t ttl = header.GetTtl();
 
     if (nextHop == nullptr)
