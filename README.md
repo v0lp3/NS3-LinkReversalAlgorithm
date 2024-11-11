@@ -95,7 +95,9 @@ General Arguments:
 
 To visualize the simulation, you can append the --visualize option when running the simulation:
 
-```./ns3 run 'lra-simulator' --visualize```
+```
+./ns3 run 'lra-simulator' --visualize
+```
 
 > [!IMPORTANT]  
 > Ensure that ns3 is configured with the PyViz visualizer
