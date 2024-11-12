@@ -20,7 +20,6 @@ main(int argc, char* argv[])
 
     NS_LOG_UNCOND("Simulation completed.");
     
-    NS_LOG_UNCOND("Total packets: " << instance.m_total_packet);
     NS_LOG_UNCOND("Success: " << instance.m_success);
     NS_LOG_UNCOND("Failure: " << instance.m_failure);
 }

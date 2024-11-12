@@ -20,7 +20,7 @@ The second phase is triggered whenever a node loses all of its outbound neighbor
 
 The simulation environment is highly customizable, enabling detailed benchmarking of the routing protocol's behavior and performance. Below are examples of benchmarks conducted, with all values being averages for the configurations used. You can run these benchmarks using the [benchmark.py](benchmark.py) script as follows:
 
-```sh
+```bash
 $ python3 benchmark.py 
 
 usage: benchmark.py [-h] [--plot] {time,failure_rate_speed,failure_rate_nodes}
@@ -80,7 +80,49 @@ $2^1 \leq$ n $\leq 2^{10}$.
 
 As seen in the plot, packet failures increase with the number of nodes due to the complexity of maintaining stable configurations in larger networks. However, more failures also occur when there are only two nodes, as there may be no other nodes available to forward the packet. Between 4 and 32 nodes, packet loss occurs in a random and unpredictable manner. After this range, packet loss becomes more consistent.
 
-## Usage
+## Installation
+
+### Requirements
+
+- [ns-3 simulator v3.42](https://www.nsnam.org/).
+- [c++ compiler](https://gcc.gnu.org/).
+- [cmake](https://cmake.org/).
+- [python3](https://www.python.org/).
+
+The simulation uses the [ns-3 simulator](https://www.nsnam.org/), and has been developed and tested with the version 3.42.
+
+### Build
+
+First, make sure you have already completed all the step required for the installation of the simulator shown [here](https://www.nsnam.org/docs/release/3.42/tutorial/html/index.html).  
+The directory structure should look something like this:
+
+```bash
+.
+└── ns-allinone-3.42/
+    └── ns-3.42/
+        ├── ns3
+        ├── examples/
+        ├── src/
+        ├── scratch/
+        └── ...
+```
+
+Move to the `scratch` folder and clone the repository:
+
+```bash
+cd ns-allinone-3.42/ns-3.42/scratch
+git clone https://github.com/v0lp3/NS3-LinkReversalAlgorithm.git
+mv NS3-LinkReversalAlgorithm/* .
+```
+
+Lastly, move back to the `ns-3.42` folder and build the simulation:
+
+```bash
+cd ..
+./ns3 run "lra-simulator --help"
+```
+
+### Usage
 
 ```bash
 $ ./ns3 run 'lra-simulator --help'
@@ -118,7 +160,6 @@ To visualize the simulation, you can append the --visualize option when running 
 
 > [!IMPORTANT]  
 > Ensure that ns3 is configured with the PyViz visualizer
-
 
 
 ## References
