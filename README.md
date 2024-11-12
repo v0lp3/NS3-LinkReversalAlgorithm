@@ -18,7 +18,24 @@ The second phase is triggered whenever a node loses all of its outbound neighbor
 
 ## Benchmarks
 
-The simulation environment is highly customizable, allowing for the benchmarking of the behavior and performance of the routing protocol. Below are some examples of benchmarks conducted. All values reported are averages for the specific configurations used.
+The simulation environment is highly customizable, enabling detailed benchmarking of the routing protocol's behavior and performance. Below are examples of benchmarks conducted, with all values being averages for the configurations used. You can run these benchmarks using the [benchmark.py](benchmark.py) script as follows:
+
+```sh
+$ python3 benchmark.py 
+
+usage: benchmark.py [-h] [--plot] {time,failure_rate_speed,failure_rate_nodes}
+
+Run benchmarks for lra-simulator.
+
+positional arguments:
+  {time,failure_rate_speed,failure_rate_nodes}
+                        Select the benchmark to run.
+
+options:
+  -h, --help            show this help message and exit
+  --plot                Plot the results after running the benchmark.
+
+```
 
 ### Packet delivery times over nodes
 
