@@ -26,7 +26,19 @@ class LrNode : public Node
     double m_height;
 
   public:
+    /**
+     * @brief Default constructor for the LrNode class.
+     *
+     * This constructor initializes an LrNode instance with a default height value.
+     */
     LrNode();
+
+    /**
+     * @brief Parameterized constructor for the LrNode class.
+     *
+     * This constructor initializes an LrNode instance with a specified height value.
+     * @param height The height value to assign to the node.
+     */
     LrNode(double height);
 
     /**
@@ -35,8 +47,16 @@ class LrNode : public Node
      */
     static TypeId GetTypeId(void);
 
+    /**
+     * @brief Gets the height of the LrNode.
+     * @return The current height value of the node.
+     */
     double GetHeight() const;
 
+    /**
+     * @brief Sets the height of the LrNode.
+     * @param height The new height value to assign to the node.
+     */
     void SetHeight(double height);
 
     /**
@@ -53,6 +73,11 @@ class LrNode : public Node
      */
     double GetDistanceFrom(Ptr<LrNode> node) const;
 
+    /**
+     * @brief Retrieves the IPv4 address associated with this LrNode.
+     *
+     * @return The IPv4Address assigned to the node.
+     */
     Ipv4Address GetIpv4Address();
 };
 

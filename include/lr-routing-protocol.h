@@ -23,7 +23,18 @@ class LinkReversalRouting : public Ipv4RoutingProtocol
     Ptr<Node> m_node;
     Ptr<Ipv4> m_ipv4;
 
+    /**
+     * @brief Constructor for the LinkReversalRouting class.
+     *
+     * Initializes a new instance of the LinkReversalRouting protocol.
+     */
     LinkReversalRouting();
+
+    /**
+     * @brief Destructor for the LinkReversalRouting class.
+     *
+     * Cleans up resources used by the LinkReversalRouting protocol instance.
+     */
     ~LinkReversalRouting();
 
     /**
@@ -73,13 +84,63 @@ class LinkReversalRouting : public Ipv4RoutingProtocol
                             const LocalDeliverCallback& lcb,
                             const ErrorCallback& ecb) override;
 
+    /**
+     * @brief Sets the associated IPv4 object for this routing protocol.
+     *
+     * @param ipv4 A Ptr to the Ipv4 object to associate with this routing protocol instance.
+     */
     virtual void SetIpv4(Ptr<Ipv4> ipv4) override;
+
+    /**
+     * @brief Sets the node on which this routing protocol is running.
+     *
+     * @param node A Ptr to the Node to associate with this routing protocol instance.
+     */
     void SetNode(Ptr<Node> node);
 
+    /**
+     * NOT IMPLEMENTED
+     */
     virtual void PrintRoutingTable(Ptr<OutputStreamWrapper> stream, Time::Unit unit) const override;
+
+    /**
+     * @brief Notifies the protocol when a network interface is brought up.
+     *
+     * This method is called when a network interface on the node transitions
+     * to an active/up state.
+     *
+     * @param interface The index of the interface that is now up.
+     */
     void NotifyInterfaceUp(uint32_t interface) override;
+
+    /**
+     * @brief Notifies the protocol when a network interface is brought down.
+     *
+     * This method is called when a network interface on the node transitions
+     * to an inactive/down state.
+     *
+     * @param interface The index of the interface that is now down.
+     */
     void NotifyInterfaceDown(uint32_t interface) override;
+
+    /**
+     * @brief Notifies the protocol of a new address added to an interface.
+     *
+     * This method handles updates when an IPv4 address is added to a network interface.
+     *
+     * @param interface The index of the interface to which the address was added.
+     * @param address The IPv4InterfaceAddress that was added.
+     */
     void NotifyAddAddress(uint32_t interface, Ipv4InterfaceAddress address) override;
+
+    /**
+     * @brief Notifies the protocol of an address removal from an interface.
+     *
+     * This method handles updates when an IPv4 address is removed from a network interface.
+     *
+     * @param interface The index of the interface from which the address was removed.
+     * @param address The Ipv4InterfaceAddress that was removed.
+     */
     void NotifyRemoveAddress(uint32_t interface, Ipv4InterfaceAddress address) override;
 };
 

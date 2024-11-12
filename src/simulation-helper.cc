@@ -109,37 +109,37 @@ SimulationHelper::parseCLI(int argc, char* argv[])
     if (this->m_sinkNodeId >= this->m_maxNodes || this->m_sourceNodeId >= this->m_maxNodes)
     {
         NS_LOG_UNCOND("Node ID must be less than the number of nodes");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_simulationDuration <= 0)
     {
         NS_LOG_UNCOND("Simulation duration must be greater than 0");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_maxRange <= 0)
     {
         NS_LOG_UNCOND("Max range must be greater than 0");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_initialDistance <= 0)
     {
         NS_LOG_UNCOND("Initial distance must be greater than 0");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_maxPackets <= 0)
     {
         NS_LOG_UNCOND("Max packets must be greater than 0");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_speed < 0)
     {
         NS_LOG_UNCOND("Speed must be positive");
-        exit(1);
+        exit(0);
     }
 
     if (this->m_simulationDuration < this->m_maxPackets)

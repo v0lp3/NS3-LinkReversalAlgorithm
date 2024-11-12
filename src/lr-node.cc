@@ -37,7 +37,20 @@ LrNode::SetHeight(double height)
 Ipv4Address
 LrNode::GetIpv4Address()
 {
-    return this->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
+    Ptr<Ipv4> ipv4 = this->GetObject<Ipv4>();
+    if (ipv4 == nullptr)
+    {
+        NS_LOG_ERROR("IPv4 object is null");
+        exit(-2);
+    }
+    
+    if (ipv4->GetNInterfaces() <= 1)
+    {
+        NS_LOG_ERROR("Invalid interface index");
+        exit(-2);
+    }
+    
+    return ipv4->GetAddress(1, 0).GetLocal();
 }
 
 double
